@@ -1,0 +1,182 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+header {
+    background-color: #001f3f;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.link-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.link-button {
+    display: inline-block;
+    padding: 4px 7px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.1s;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+.link-button:hover {
+    background-color: #033973;
+    transform: translateY(-2px);
+}
+.content {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #001f3f;
+}
+#button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+#export-btn, #export-all-btn {
+    padding: 10px 20px;
+    background-color: #001f3f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+    #export-btn:hover, #export-all-btn:hover {
+    background-color: #033973;
+}
+#filter-container, #filter-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+#filter-container label {
+    margin-right: 10px;
+}
+#filter-container input, #filter-container button,
+#filter-buttons-container button, #device-select {
+    margin: 0 5px;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+#filter-container button, #filter-buttons-container button {
+    background-color: #001f3f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#filter-container button:hover, #filter-buttons-container button:hover {
+    background-color: #033973;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #001f3f;
+    color: white;
+}
+tr:hover {
+    background-color: #f5f5f5;
+}
+#map {
+    height: 400px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+#pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#pagination-container button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #001f3f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#pagination-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#page-info {
+    margin: 0 10px;
+}
+#filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+#filter-container label {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#filter-container input, #filter-container button {
+    margin: 5px;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#filter-container button {
+    background-color: #001f3f;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#filter-container button:hover {
+    background-color: #033973;
+}

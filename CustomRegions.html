@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Define Custom Regions</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="css/CustomRegions.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Hughes Communications India</div>
+        <div class="link-container">
+            <a class="link-button" href="home.html">Home</a>
+            <a class="link-button" href="currentLocation.html">Real-Time Locations</a>
+            <a class="link-button" href="HistoricalData.html">Historical Data</a>
+            <a class="link-button" href="mappedHistory.html">Mapped History</a>
+            <a class="link-button" href="geofencing.html">Geofencing (Testing)</a>
+            <a class="link-button" href="geofencingPage(restricted).html">Geofencing (Restricted Access)</a>
+            <a class="link-button" href="CustomRegions.html">Define Custom Region</a>
+        </div>
+    </header>
+    <div id="input-controls">
+        <label for="shape-select">Select Shape:</label>
+        <select id="shape-select">
+            <option value="">Select...</option>
+            <option value="circle">Circle</option>
+            <option value="polygon">Polygon</option>
+        </select>
+
+        <div id="polygon-controls" style="display: none;">
+            <h2>Create Polygon</h2>
+            <div id="coordinate-inputs">
+                <div>
+                    <input type="text" placeholder="Latitude" class="lat-input">
+                    <input type="text" placeholder="Longitude" class="lng-input">
+                </div>
+            </div>
+            <button onclick="addCoordinateInput()">Add another point</button>
+            <button onclick="createPolygon()">Create Polygon</button>
+            <button onclick="savePolygon()">Save Polygon</button>
+        </div>
+
+        <div id="circle-controls" style="display: none;">
+            <h2>Create Circle</h2>
+            <input type="text" id="circle-lat" placeholder="Center Latitude">
+            <input type="text" id="circle-lng" placeholder="Center Longitude">
+            <input type="text" id="circle-radius" placeholder="Radius (KM)">
+            <button onclick="createCircle()">Create Circle</button>
+            <button onclick="saveCircle()">Save Circle</button>
+        </div>
+    </div>
+    <div id="map"></div>
+
+    <!-- Leaflet library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script src="CustomRegions.js"></script>
+</body>
+</html>
