@@ -32,7 +32,8 @@ function populateTable(data) {
         row.insertCell(3).textContent = device.longitude.toFixed(4);
         row.insertCell(4).textContent = device.district;
         row.insertCell(5).textContent = device.state;
-        row.insertCell(6).innerHTML = `<a href="map.html?lat=${device.latitude}&lng=${device.longitude}">View on Map</a>`;
+        row.insertCell(6).textContent = device.status;
+        row.insertCell(7).innerHTML = `<a href="map.html?lat=${device.latitude}&lng=${device.longitude}">View on Map</a>`;
     });
 }
 
@@ -48,10 +49,9 @@ function plotDevicesOnMap(data) {
     });
     data.forEach(device => {
         const marker = L.marker([device.latitude, device.longitude], {icon:defaultIcon})
-                        .bindPopup(`Device ID: ${device.device_id}<br>Time: ${device.time}<br>Latitude: ${device.latitude}<br>Longitude: ${device.longitude}<br>District: ${device.district}<br>State: ${device.state}<br>`);
+                        .bindPopup(`Device ID: ${device.device_id}<br>Time: ${device.time}<br>Latitude: ${device.latitude}<br>Longitude: ${device.longitude}<br>District: ${device.district}<br>State: ${device.state}<br>Status: ${device.status || 'Unknown'}<br>`);
         markersLayer.addLayer(marker);
     });
-
     markersLayer.addTo(map);
 }
 
