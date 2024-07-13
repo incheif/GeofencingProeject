@@ -4,182 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ... (previous styles remain unchanged) ... */
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #ffffff;
+            --accent-color: #4DC9E6;
+            --gradient-start: #E6F3FF;
+            --gradient-end: #B3D9FF;
+        }
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-            color: #333;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            overflow-x: hidden;
+        }
+        .wave {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23e6f2ff' fill-opacity='1' d='M0,160L48,181.3C96,203,192,245,288,250.7C384,256,480,224,576,213.3C672,203,768,213,864,224C960,235,1056,245,1152,234.7C1248,224,1344,192,1392,176L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E") no-repeat;
+            background-size: cover;
+            z-index: -1;
+            animation: wave 20s linear infinite alternate;
+        }
+        @keyframes wave {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         header {
-            background-color: #001f3f;
-            color: white;
-            padding: 10px 20px;
+            background-color: var(--primary-color);
+            padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .logo {
-            font-size: 1.5em;
+        .logo img {
+            height: 50px;
+        }
+        .user-actions {
+            display: flex;
+            align-items: center;
+            color: var(--secondary-color);
+        }
+        .user-actions i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        .logout-btn {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1rem;
             font-weight: bold;
-        }
-        .link-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .link-button {
-            display: inline-block;
-            padding: 4px 7px;
-            margin: 5px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.1s;
-            border: none;
             cursor: pointer;
-            font-size: 14px;
+            transition: all 0.3s ease;
         }
-        .link-button:hover {
-            background-color: #033973;
+        .logout-btn:hover {
+            background-color: #3BA9C6;
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .content {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #001f3f;
-        }
-        #button-container {
+        main {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        #back-btn, #export-btn, #export-all-btn {
-            padding: 10px 20px;
-            background-color: #001f3f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        #back-btn:hover, #export-btn:hover, #export-all-btn:hover {
-            background-color: #033973;
-        }
-        #filter-container, #filter-buttons-container {
-            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            padding: 1rem;
         }
-        #filter-container label {
-            margin-right: 10px;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            width: 100%;
         }
-        #filter-container input, #filter-container button,
-        #filter-buttons-container button, #device-select {
-            margin: 0 5px;
-            padding: 8px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        #filter-container button, #filter-buttons-container button {
-            background-color: #001f3f;
-            color: white;
-            border: none;
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #filter-container button:hover, #filter-buttons-container button:hover {
-            background-color: #033973;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #001f3f;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        #map {
-            height: 400px;
-            width: 100%;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .explanation-container {
+            box-shadow: 0 10px 20px rgba(0, 51, 102, 0.1);
+            border: 2px solid transparent;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin-top: 20px;
+            flex-direction: column;
+            height: 100%;
         }
-        .explanation-box {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 10px;
-            width: calc(33% - 20px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 51, 102, 0.2);
+            border-color: var(--gradient-start);
+            background-color: rgba(255, 255, 255, 1);
         }
-        .explanation-box h3 {
-            color: #001f3f;
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover i {
+            transform: scale(1.1);
+        }
+        .feature-card h3 {
+            color: var(--primary-color);
+            font-size: 1.25em;
             margin-top: 0;
         }
-        .explanation-box p {
-            font-size: 14px;
-            line-height: 1.4;
+        .feature-card p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
+            color: #666;
         }
-        .explanation-box {
+        .feature-btn {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
         }
-        .explanation-box:hover {
-            background-color: #e9e9e9;
+        .feature-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .explanation-box a {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .logo-link {
-            text-decoration: none;
-            color: white;
-            display: flex;
-            align-items: center;
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .user-actions {
+                margin-top: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="wave"></div>
     <header>
-        <div class="logo">
-            <img src="logo.png" alt="Logo" style="height: 50px; margin-right: 10px;">
-        </div>
+        <div class="logo">Hughes Communications India</div>
         <div class="link-container">
             <a class="link-button" href="home.html">Home</a>
             <a class="link-button" href="currentLocation.html">Real-Time Locations</a>
@@ -190,50 +169,49 @@
             <a class="link-button" href="CustomRegions.html">Define Custom Region</a>
         </div>
     </header>
-
-
-    <div class="explanation-container">
-        <div class="explanation-box" onclick="navigateTo('currentLocation.html')">
-            <a href="currentLocation.html">
-                <h3>Real-Time Locations</h3>
-                <p>View the real-time locations of all tracked devices on an interactive map. This page provides up-to-date information on where each device is currently situated.</p>
-            </a>
-        </div>
-        <div class="explanation-box" onclick="navigateTo('HistoricalData.html')">
-            <a href="HistoricalData.html">
+    <main>
+        <div class="features-grid">
+            <div class="feature-card" onclick="navigateTo('currentLocation.html')">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Current Location</h3>
+                <p>View real-time locations of all terminals with instant updates.</p>
+                <button class="feature-btn">View Locations</button>
+            </div>
+            <div class="feature-card" onclick="navigateTo('HistoricalData.html')">
+                <i class="fas fa-history"></i>
                 <h3>Historical Data</h3>
-                <p>Access historical location data for all devices. This page allows you to see where devices have been over time, helping you track movement patterns and past locations.</p>
-            </a>
-        </div>
-        <div class="explanation-box" onclick="navigateTo('mappedHistory.html')">
-            <a href="mappedHistory.html">
+                <p>Access historical location data for all devices. Track movement patterns and past locations.</p>
+                <button class="feature-btn">View History</button>
+            </div>
+            <div class="feature-card" onclick="navigateTo('mappedHistory.html')">
+                <i class="fas fa-route"></i>
                 <h3>Mapped History</h3>
-                <p>Visualize the movement history of devices on a map. This feature plots the historical locations of devices, allowing you to see travel routes and frequently visited areas.</p>
-            </a>
-        </div>
-        <div class="explanation-box" onclick="navigateTo('geofencing.html')">
-            <a href="geofencing.html">
+                <p>Visualize the movement history of devices on a map. See travel routes and frequently visited areas.</p>
+                <button class="feature-btn">View Mapped History</button>
+            </div>
+            <div class="feature-card" onclick="navigateTo('geofencing.html')">
+                <i class="fas fa-draw-polygon"></i>
                 <h3>Geofencing (Testing)</h3>
-                <p>Test and experiment with geofencing features. Set up virtual boundaries and receive alerts when devices enter or exit these predefined areas. This is a sandbox environment for testing purposes.</p>
-            </a>
-        </div>
-        <div class="explanation-box" onclick="navigateTo('geofencingPage(restricted).html')">
-            <a href="geofencingPage(restricted).html">
-                <h3>Geofencing (Restricted Access)</h3>
-                <p>Access the production version of the geofencing feature. This page is restricted to authorized users and allows for setting up and managing geofences in a live environment.</p>
-            </a>
-        </div>
-        <div class="explanation-box" onclick="navigateTo('CustomRegions.html')">
-            <a href="CustomRegions.html">
+                <p>Set up and test geofences to monitor when terminals enter or leave specified areas.</p>
+                <button class="feature-btn">Test Geofencing</button>
+            </div>
+            <div class="feature-card" onclick="navigateTo('geofencingPage(restricted).html')">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Geofencing (Restricted)</h3>
+                <p>Manage restricted geofencing areas. Control access and monitor terminal activities.</p>
+                <button class="feature-btn">Manage Restricted Areas</button>
+            </div>
+            <div class="feature-card" onclick="navigateTo('CustomRegions.html')">
+                <i class="fas fa-pencil-alt"></i>
                 <h3>Define Custom Region</h3>
-                <p>Define and add custom geographical regions to the system. These regions can be used for various purposes such as geofencing, area-based reporting, or location-specific alerts.</p>
-            </a>
+                <p>Create and manage custom regions for geofencing. Tailor geofences to specific needs.</p>
+                <button class="feature-btn">Define Regions</button>
+            </div>
         </div>
-    </div>
-
+    </main>
     <script>
-        function navigateTo(url) {
-            window.location.href = url;
+        function navigateTo(page) {
+            window.location.href = page;
         }
     </script>
 </body>

@@ -1,53 +1,76 @@
-h1{
-    text-align: center;
+:root {
+    --primary-color: #003366;
+    --secondary-color: #ffffff;
+    --accent-color: #4DC9E6;
+    --gradient-start: #E6F3FF;
+    --gradient-end: #B3D9FF;
 }
-body {
-    font-family: Arial, sans-serif;
+
+* {
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
-    color: #333;
+    box-sizing: border-box;
 }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+}
+
 header {
-    background-color: #001f3f;
-    color: white;
-    padding: 10px 20px;
+    background-color: var(--primary-color);
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .logo {
     font-size: 1.5em;
     font-weight: bold;
+    color: var(--secondary-color);
 }
+
 .link-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
+
 .link-button {
     display: inline-block;
-    padding: 8px 15px;
+    padding: 0.5rem 1rem;
     margin: 5px;
     text-align: center;
     text-decoration: none;
-    color: white;
-    border-radius: 5px;
-    transition: background-color 0.3s, transform 0.1s;
-    border: none;
+    color: var(--primary-color);
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: var(--accent-color);
 }
+
 .link-button:hover {
-    background-color: #033973;
+    background-color: #3BA9C6;
     transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .content {
-    padding: 20px;
-    max-width: 1200px;
+    padding: 1rem;
+    max-width: 1000px;
     margin: 0 auto;
 }
+
 #filter-container {
     position: static;
     display: flex;
@@ -65,100 +88,90 @@ header {
     margin: 20px 0;
     z-index: 1;
 }
+
 .button-container {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
 }
+
 .dropdown {
     position: relative;
     display: inline-block;
 }
+
 .dropdown-content {
     display: none;
-position: absolute;
-background-color: #f9f9f9;
-min-width: 160px;
-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-padding: 12px 16px;
-z-index: 1001;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1001;
 }
+
 .dropdown-content label {
     display: block;
     margin-bottom: 5px;
 }
+
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
 button {
-    background-color: #001f3f;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
     border: none;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
+
 button:hover {
-    background-color: #033973;
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .lock-btn {
     background-color: #28a745;
 }
+
 .lock-btn.locked {
     background-color: #dc3545;
 }
+
 #logs-section {
     margin-top: 20px;
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
+
 th {
-    background-color: #001f3f;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
     cursor: pointer;
 }
+
 tr:hover {
-    background-color: #f5f5f5;
-}
-.content {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.custom-region-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-.delete-region-btn {
-    background-color: transparent;
-    color: black;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-}
-.delete-region-btn:hover {
-    color: red;
-}
-.delete-region-btn:focus {
-    outline: none;
-}
-.region-checkbox {
-    margin-right: 5px;
-}
+    background-color
