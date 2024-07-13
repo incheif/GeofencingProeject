@@ -12,14 +12,15 @@ function displayLocations(locations) {
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     const pageLocations = locations.slice(startIndex, endIndex);
-
-    pageLocations.forEach(function(location) {
+    const PageLocations=pageLocations.reverse();
+    PageLocations.forEach(function(location) {
         var row = table.insertRow();
         row.insertCell(0).textContent = location.time;
         row.insertCell(1).textContent = location.latitude.toFixed(4);
         row.insertCell(2).textContent = location.longitude.toFixed(4);
         row.insertCell(3).textContent = location.district;
         row.insertCell(4).textContent = location.state;
+        row.insertCell(5).textContent = location.status;
     });
 
     updatePaginationControls(locations.length);

@@ -376,6 +376,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(message);
             sendLogMessage(message);
         });
+        allData.forEach(location => {
+            updateDeviceStatus(location.device_id, filteredDeviceIds.includes(location.device_id) ? 'InActive' : 'Active');
+        });
 
         const devicesLeft = previouslyFilteredDeviceIds.filter(id => !filteredDeviceIds.includes(id));
         devicesLeft.forEach(deviceId => {
@@ -389,7 +392,17 @@ document.addEventListener('DOMContentLoaded', function () {
         updateFilteredLocationsTable(filteredData);
         saveFilters();
     }
+    function updateDeviceStatus(deviceId, status) {
+        fetch('/api/update_device_status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ device_id: deviceId, status: status }),
+        })
+        .then(response => response.json())
 
+    }
     function updateFilteredLocationsTable(data) {
         const tbody = document.getElementById('filteredLocationsBody');
         tbody.innerHTML = '';
@@ -401,6 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
             row.insertCell().textContent = location.longitude.toFixed(4);
             row.insertCell().textContent = location.district;
             row.insertCell().textContent = location.state;
+            row.insertCell().textContent = location.status || 'Unknown'; // Add this line
         });
     }
 

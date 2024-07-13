@@ -20,7 +20,19 @@ users = {
 }
 
 
+@app.route('/api/update_device_status', methods=['POST'])
+def update_device_status():
+    data = request.json
+    device_id = data.get('device_id')
+    status = data.get('status')
 
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("UPDATE locations SET status = ? WHERE device_id = ? AND time = (SELECT MAX(time) FROM locations WHERE device_id = ?)",
+                  (status, device_id, device_id))
+        conn.commit()
+
+    return jsonify({'message': 'Device status updated successfully'}), 200
 
 @app.route('/api/login', methods=['POST'])
 def login():
