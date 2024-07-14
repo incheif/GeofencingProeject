@@ -23,25 +23,32 @@ body {
 /* Header Styles */
 header {
     background-color: var(--primary-color);
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-.logo img {
-    max-height: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
+
 /* Navigation Styles */
-.link-container {
+.nav-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     background-color: var(--primary-color);
     padding: 10px 0;
 }
+
+.link-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
 .link-button {
     display: inline-block;
     padding: 8px 15px;
@@ -57,6 +64,7 @@ header {
     font-size: 14px;
     font-weight: 500;
 }
+
 .link-button:hover {
     background-color: #033973;
     transform: translateY(-2px);
@@ -87,6 +95,11 @@ header {
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 0 10px rgba(0, 51, 102, 0.1);
     border-radius: 15px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.5; }
 }
 h1 {
     text-align: center;
@@ -94,6 +107,14 @@ h1 {
     color: var(--primary-color);
     font-size: 2em;
     font-weight: 600;
+}
+.logo img {
+    max-height: 50px;
+    transition: var(--transition);
+}
+
+.logo img:hover {
+    transform: scale(1.05);
 }
 
 /* Map Styles */
@@ -106,25 +127,43 @@ h1 {
 }
 
 /* Table Styles */
+.table {
+    overflow-x: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 10px rgba(0, 51, 102, 0.1);
+    font-size: 16px;
 }
+
+thead {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
 th, td {
-    padding: 12px;
+    padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-th {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    font-weight: 600;
+
+tbody tr:nth-child(even) {
+    background-color: var(--gradient-start);
 }
-tr:hover {
-    background-color: #f5f5f5;
+
+tbody tr:hover {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: black;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
 }
 
 /* Button Styles */
