@@ -32,7 +32,6 @@ function fetchAndPlotLocations() {
         })
         .catch(error => console.error('Error fetching location data:', error));
 }
-
 function plotLocations(data) {
     map.eachLayer(layer => {
         if (layer instanceof L.Marker || layer instanceof L.Polyline) {
@@ -42,100 +41,93 @@ function plotLocations(data) {
 
     const latlngs = data.map(loc => [loc.latitude, loc.longitude]);
 
-    // Add markers only at the starting and ending locations
     if (latlngs.length > 0) {
-        const startMarker = L.marker(latlngs[0], {icon: createCustomIcon('green',0)}).addTo(map);
-        startMarker.bindPopup(getPopupContent(data[0],0));
-        const colors = createGradientColors('#00FF00', '#0000FF', latlngs.length - 1);
+        // Add dotted red polyline
+        L.polyline(latlngs, {
+            color: '#003366', // Red color
+            weight: 4,
+            opacity: 0.8,
+            dashArray: '10, 10', // This creates the dotted effect
+            lineCap: 'round',
+            lineJoin: 'round'
+        }).addTo(map);
+
+        // Add start marker
+        const startMarker = L.marker(latlngs[0], {icon: createCustomIcon('start')}).addTo(map);
+        startMarker.bindPopup(getPopupContent(data[0], 'start'));
+
+        // Add waypoint markers
         for (let i = 1; i < latlngs.length - 1; i++) {
-            const marker = L.marker(latlngs[i], {icon: createCustomIcon(colors[i],5)}).addTo(map);
-            marker.bindPopup(getPopupContent(data[i],5));
+            const waypointMarker = L.marker(latlngs[i], {icon: createCustomIcon('waypoint')}).addTo(map);
+            waypointMarker.bindPopup(getPopupContent(data[i], 'waypoint'));
         }
+
+        // Add end marker if there's more than one point
         if (latlngs.length > 1) {
-            const endMarker = L.marker(latlngs[latlngs.length - 1], {icon: createCustomIcon('blue',1)}).addTo(map);
-            endMarker.bindPopup(getPopupContent(data[data.length - 1],1));
+            const endMarker = L.marker(latlngs[latlngs.length - 1], {icon: createCustomIcon('end')}).addTo(map);
+            endMarker.bindPopup(getPopupContent(data[data.length - 1], 'end'));
         }
 
-        // Create gradient colors
-
-        // Add polyline segments with gradient colors
-        for (let i = 0; i < latlngs.length - 1; i++) {
-            L.polyline([latlngs[i], latlngs[i + 1]], { color: colors[i] }).addTo(map);
-        }
-
-        map.fitBounds(L.polyline(latlngs).getBounds());
+        map.fitBounds(L.polyline(latlngs).getBounds(), {padding: [50, 50]});
     }
 }
 
-function createCustomIcon(color,index) {
-    if(index == 0 || index == 1){
-        return L.divIcon({
-            className: 'custom-marker-icon',
-            html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="${color}" /></svg>`,
-            iconSize: [24, 24],
-            iconAnchor: [12, 12],
-            popupAnchor: [0, -12]
-        });
+function createCustomIcon(type) {
+    let color, size;
+    switch (type) {
+        case 'start':
+            color = '#008000'; // Green
+            size = 36;
+            break;
+        case 'end':
+            color = '#FF0000'; // Red
+            size = 36;
+            break;
+        case 'waypoint':
+            color = '#ffb700'; // Orange
+            size = 14; // Smaller size for waypoints
+            break; 
     }
-    else{
-        return L.divIcon({
-            className: 'custom-marker-icon',
-            html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="5" fill="${color}" /></svg>`,
-            iconSize: [5, 5],
-            iconAnchor: [12, 12],
-            popupAnchor: [0, -12]
-        });
-    }
+    return L.divIcon({
+        className: 'custom-marker-icon',
+        html: `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}">
+                <circle cx="12" cy="12" r="10" fill="white" />
+                <circle cx="12" cy="12" r="8" fill="${color}" />
+            </svg>`,
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2],
+        popupAnchor: [0, -size/2]
+    });
 }
 
-function createGradientColors(startColor, endColor, steps) {
-    const start = hexToRgb(startColor);
-    const end = hexToRgb(endColor);
-    const stepFactor = 1 / steps;
-    const interpolatedColorArray = [];
-
-    for (let i = 0; i < steps; i++) {
-        interpolatedColorArray.push(interpolateColor(start, end, stepFactor * i));
-    }
-
-    return interpolatedColorArray.map(rgbToHex);
-}
-
-function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return [r, g, b];
-}
-
-function rgbToHex(rgb) {
-    return `#${((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1)}`;
-}
-
-function interpolateColor(start, end, factor) {
-    const result = start.slice();
-    for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (end[i] - start[i]));
-    }
-    return result;
-}
-
-function getPopupContent(data, index) {
+function getPopupContent(data, type) {
     const time = new Date(data.time).toLocaleString();
     const district = data.district;
     const state = data.state;
-    if(index == 0){
-        return `<b>Starting Point</b><br><b>Time:</b> ${time}<br>District: ${district}<br>State: ${state}`;
+    let title, color;
+    switch (type) {
+        case 'start':
+            title = 'Starting Point';
+            color = '#008000';
+            break;
+        case 'end':
+            title = 'Current Location';
+            color = '#FF0000';
+            break;
+        case 'waypoint':
+            title = 'Waypoint';
+            color = '#FFA500';
+            break;
     }
-    else if(index == 1){
-        return `<b>Current Point</b><br><b>Time:</b> ${time}<br>District: ${district}<br>State: ${state}`;
-    }
-    else{
-        return `<b>Time:</b> ${time}<br>District: ${district}<br>State: ${state}`;
-    }
+    return `
+        <div style="font-family: Arial, sans-serif; padding: 5px;">
+            <h3 style="margin: 0 0 10px; color: ${color};">${title}</h3>
+            <p style="margin: 5px 0;"><strong>Time:</strong> ${time}</p>
+            <p style="margin: 5px 0;"><strong>District:</strong> ${district}</p>
+            <p style="margin: 5px 0;"><strong>State:</strong> ${state}</p>
+        </div>`;
 }
-
 function applyTimeFilter() {
     filterNumber = parseInt(document.getElementById('time-number').value);
     filterUnit = document.getElementById('time-unit').value;
