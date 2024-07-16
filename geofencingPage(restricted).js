@@ -49,7 +49,9 @@ function toggleLockFilters() {
     });
 
     lockBtn.textContent = filtersLocked ? 'Unlock Filters' : 'Lock Filters';
-
+    updateLogs();
+    populateDeviceTable(data);
+    applyFilters();
     saveFilters(); // Save filters when locking/unlocking
 }
 
@@ -155,9 +157,12 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchAllDevices() {
         fetch('/api/latest_locations')
             .then(response => response.json())
+
             .then(data => {
                 allData = data;
                 applyFilters();
+                data.sort((a, b) => a.device_id - b.device_id); // Sort data by device_id ascending
+                populateDeviceTable(data);
             })
             .catch(error => console.error('Error fetching device locations:', error));
     }
@@ -249,10 +254,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log(`District checkbox not found: ${district}`);
                     }
                 });
-
+                loadCustomRegions();
                 // Check custom region checkboxes
                 data.regions.forEach(region => {
-                    const checkbox = document.querySelector(`.region-checkbox[value='${JSON.stringify(region)}']`);
+                    const checkbox = document.querySelector(`.region-checkbox[value="${(region)}"]`);
+                    console.log(document.querySelector(`.region-checkbox`));
                     if (checkbox) {
                         checkbox.checked = true;
                         console.log(`Region checkbox checked: ${region.name}`);
@@ -390,7 +396,6 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('filteredDeviceIds', JSON.stringify(filteredDeviceIds));
         localStorage.setItem('filteredData', JSON.stringify(filteredData));
         updateFilteredLocationsTable(filteredData);
-        saveFilters();
     }
     function updateDeviceStatus(deviceId, status) {
         fetch('/api/update_device_status', {
@@ -472,6 +477,78 @@ document.addEventListener('DOMContentLoaded', function () {
         rows.forEach(row => tbody.appendChild(row));
     }
 
+    function populateDeviceTable(data) {
+        const tableBody = document.getElementById('deviceTableBody');
+        tableBody.innerHTML = ''; // Clear existing data
+
+        data.forEach(device => {
+            const row = tableBody.insertRow();
+            row.setAttribute('data-device-id', device.device_id);
+
+            row.insertCell(0).textContent = device.device_id;
+            row.insertCell(1).textContent = device.time;
+            row.insertCell(2).textContent = device.latitude.toFixed(4);
+            row.insertCell(3).textContent = device.longitude.toFixed(4);
+            row.insertCell(4).textContent = device.district;
+            row.insertCell(5).textContent = device.state;
+            row.insertCell(6).textContent = device.status || 'Unknown';
+
+            const toggleCell = row.insertCell(7);
+            const toggleButton = document.createElement('button');
+            toggleButton.classList.add('toggle-button');
+            toggleButton.textContent = device.status === "Inactive" ? 'Enable' : 'Disable';
+            toggleButton.classList.add(device.status === "Inactive" ? 'enable' : 'disable');
+            toggleButton.onclick = () => toggleDevice(device, toggleButton);
+            toggleCell.appendChild(toggleButton);
+
+        });
+    }
+
+    function toggleDevice(device, button) {
+        const newStatus = device.status === "Inactive" ? "Active" : "Inactive";
+        updateButtonUI(button, newStatus);
+        device.status = newStatus;
+        updateTableRow(device);
+        updateMapMarker(device);
+
+        updateDeviceStatus(device.device_id, newStatus)
+            .catch(error => {
+                console.error('Error updating device status:', error);
+                device.status = device.status === "Inactive" ? "Active" : "Inactive";
+                updateButtonUI(button, device.status);
+                updateTableRow(device);
+                updateMapMarker(device);
+            });
+    }
+
+    function updateButtonUI(button, status) {
+        button.textContent = status === "Inactive" ? 'Enable' : 'Disable';
+        button.classList.remove(status === "Inactive" ? 'disable' : 'enable');
+        button.classList.add(status === "Inactive" ? 'enable' : 'disable');
+    }
+
+    function updateTableRow(device) {
+        const row = document.querySelector(`tr[data-device-id="${device.device_id}"]`);
+        if (row) {
+            row.cells[6].textContent = device.status;
+        }
+    }
+
+    function updateDeviceStatus(deviceId, status) {
+        return fetch('/api/update_device_status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ device_id: deviceId, status: status }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        });
+    }
     document.getElementById('state-select').addEventListener('change', populateDistrictFilter);
     document.getElementById('state-select').addEventListener('change', applyFilters);
     document.getElementById('district-select').addEventListener('change', applyFilters);
@@ -484,6 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchAllDevices();
         loadCustomRegions();
         loadFilters();
+        updateLogs();
     });
 
     setInterval(function() {

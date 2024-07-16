@@ -144,6 +144,7 @@ def get_latest_locations():
     try:
         with get_db_connection() as conn:
             c = conn.cursor()
+
             c.execute("SELECT * FROM locations WHERE (device_id, time) IN (SELECT device_id, MAX(time) FROM locations GROUP BY device_id)")
             rows = c.fetchall()
             latest_locations = [dict(row) for row in rows]

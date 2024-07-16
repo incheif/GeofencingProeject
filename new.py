@@ -72,7 +72,7 @@ def get_location_details(latitude, longitude, max_retries=3):
             district = address.get('state_district', 'Unknown District')
             if district.endswith(' District'):
                 district = district[:-9]
-            state = address.get('state', 'Unknown State')
+            state = address.get('state', 'Out of India')
             return district, state
         except requests.exceptions.RequestException as e:
             print(f"Error during geocoding (attempt {attempt + 1}/{max_retries}): {e}")
