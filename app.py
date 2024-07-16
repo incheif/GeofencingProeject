@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, send_from_directory
+import bcrypt
+from flask import Flask, request, jsonify, send_from_directory, session
 from flask_cors import CORS
 import sqlite3
 from datetime import datetime
@@ -9,6 +10,7 @@ import os
 FILTERS_FILE = 'filters.json'
 
 app = Flask(__name__, static_url_path='', static_folder='')
+app.secret_key = 'your_secret_key_here'
 
 
 # Initialize Geopy geocoder
@@ -34,16 +36,59 @@ def update_device_status():
 
     return jsonify({'message': 'Device status updated successfully'}), 200
 
+@app.route('/api/create_account', methods=['POST'])
+def create_account():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"success": False, "message": "Username and password are required"}), 400
+
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+    try:
+        with get_db_connection() as conn:
+            c = conn.cursor()
+            c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
+            conn.commit()
+        return jsonify({"success": True, "message": "Account created successfully"}), 201
+    except sqlite3.IntegrityError:
+        return jsonify({"success": False, "message": "Username already exists"}), 409
+    except Exception as e:
+        print(f"Error creating account: {str(e)}")
+        return jsonify({"success": False, "message": "Failed to create account"}), 500
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"success": True, "message": "Logged out successfully"}), 200
+
+
+
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.json
     username = data.get('username')
     password = data.get('password')
 
-    if username in users and users[username] == password:
-        return jsonify({"success": True, "message": "Login successful"}), 200
-    else:
-        return jsonify({"success": False, "message": "Invalid username or password"}), 401
+    if not username or not password:
+        return jsonify({"success": False, "message": "Username and password are required"}), 400
+
+    try:
+        with get_db_connection() as conn:
+            c = conn.cursor()
+            c.execute("SELECT password FROM users WHERE username = ?", (username,))
+            user = c.fetchone()
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            return jsonify({"success": True, "message": "Login successful"}), 200
+        else:
+            return jsonify({"success": False, "message": "Invalid username or password"}), 401
+    except Exception as e:
+        print(f"Error during login: {str(e)}")
+        return jsonify({"success": False, "message": "Login failed"}), 500
+
 
 @app.route('/api/save_filters', methods=['POST'])
 def save_filters():
@@ -77,6 +122,11 @@ with get_db_connection() as conn:
                   longitude REAL NOT NULL,
                   district TEXT,
                   state TEXT)''')
+    conn.commit()
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  username TEXT UNIQUE NOT NULL,
+                  password TEXT NOT NULL)''')
     conn.commit()
 
 # Function to reverse geocode and get district and state names
