@@ -10,17 +10,22 @@
 <body>
     <header>
         <div class="logo">
-            <img src="images/logo.png" alt="Logo">
+        <img src="images/logo.png" alt="Logo">
         </div>
-        <div class="link-container">
-            <a class="link-button" href="home.html">Home</a>
-            <a class="link-button" href="currentLocation.html">Real-Time Locations</a>
-            <a class="link-button" href="HistoricalData.html">Historical Data</a>
-            <a class="link-button" href="mappedHistory.html">Mapped History</a>
-            <a class="link-button" href="geofencing.html">Geofencing (Testing)</a>
-            <a class="link-button" href="geofencingPage(restricted).html">Geofencing (Restricted Access)</a>
-            <a class="link-button" href="CustomRegions.html">Define Custom Region</a>
-        </div>
+        <nav class="link-container">
+                <a href="home.html" class="link-button">Home</a>
+                 <a href="currentLocation.html" class="link-button">Real-Time Locations</a>
+                <a href="HistoricalData.html" class="link-button">Historical Data</a>
+                <a href="mappedHistory.html" class="link-button">Mapped History</a>
+                <div class="dropdown1">
+                    <button class="dropbtn1">Geofencing</button>
+                        <div class="dropdown-content1">
+                              <a href="geofencing.html">Testing</a>
+                              <a href="geofencingPage(restricted).html">Restricted Access</a>
+                        </div>
+                </div>
+                <a href="CustomRegions.html" class="link-button">Define Custom Region</a>
+        </nav>
     </header>
     <div class="wave"></div>
     <div id="device-controls">
@@ -53,7 +58,7 @@
     <!-- Leaflet library -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    <script src="MappedHistory.js"></script>
+    <script src="mappedHistory.js"></script>
 
 
 </body>
