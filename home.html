@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Welcome to Your Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -23,7 +23,7 @@
             color: var(--primary-color);
             background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
             overflow-x: hidden;
-            font-size: 16px; /* Base font size */
+            font-size: 16px;
         }
         .wave {
             position: fixed;
@@ -31,7 +31,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23e6f2ff' fill-opacity='1' d='M0,160L48,181.3C96,203,192,245,288,250.7C384,256,480,224,576,213.3C672,203,768,213,864,224C960,235,1056,245,1152,234.7C1248,224,1344,192,1392,176L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E") no-repeat;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23e6f2ff' fill-opacity='0.8' d='M0,160L48,181.3C96,203,192,245,288,250.7C384,256,480,224,576,213.3C672,203,768,213,864,224C960,235,1056,245,1152,234.7C1248,224,1344,192,1392,176L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E") no-repeat;
             background-size: cover;
             z-index: -1;
             animation: wave 20s linear infinite alternate;
@@ -41,39 +41,41 @@
             100% { background-position: 100% 50%; }
         }
         header {
-            background-color: var(--primary-color);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .logo img {
-            max-height: 50px;
-            transition: transform 0.3s ease;
-        }
-        .logo img:hover {
-            transform: scale(1.05);
-        }
+    background-color: var(--primary-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    max-height: 50px;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+    
         .user-actions {
             display: flex;
             align-items: center;
             color: var(--secondary-color);
         }
-        .user-actions {
-            cursor: pointer;
-            color: rgb(245, 52, 38);
-            text-decoration: underline;
-        }
         .user-actions i {
             font-size: 1.5rem;
             margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .user-actions i:hover {
+            transform: scale(1.1);
         }
         .logout-btn {
-            background-color: white;
+            background-color: var(--accent-color);
             color: var(--primary-color);
             border: none;
             padding: 0.5rem 1rem;
@@ -87,98 +89,107 @@
         .logout-btn:hover {
             background-color: #3BA9C6;
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         main {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
-            min-height: calc(100vh - 80px); /* Adjust based on header height */
+            padding: 3rem 2rem;
+            min-height: calc(100vh - 80px);
+        }
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .welcome-message h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .welcome-message p {
+            font-size: 1.2rem;
+            color: #555;
         }
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
             max-width: 1200px;
             width: 100%;
         }
         .feature-card {
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            padding: 1.5rem;
+            padding: 2rem;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0, 51, 102, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
             border: 2px solid transparent;
             display: flex;
             flex-direction: column;
             height: 100%;
+            animation: cardAppear 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.03);
             box-shadow: 0 20px 40px rgba(0, 51, 102, 0.2);
-            border-color: var(--gradient-start);
+            border-color: var(--accent-color);
             background-color: rgba(255, 255, 255, 1);
         }
         .feature-card i {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--accent-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             transition: all 0.3s ease;
         }
         .feature-card:hover i {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
         }
         .feature-card h3 {
             color: var(--primary-color);
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             margin-top: 0;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
         .feature-card p {
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
             flex-grow: 1;
-            color: #666;
-            font-size: 0.9rem;
+            color: #555;
+            font-size: 1rem;
         }
         .feature-btn {
             background-color: var(--primary-color);
             color: var(--secondary-color);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            align-self: center;
         }
         .feature-btn:hover {
             background-color: var(--accent-color);
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
-        /* Responsive adjustments */
-        @media (min-width: 1200px) {
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            body {
-                font-size: 18px;
-            }
-        }
-        
-        @media (max-width: 1199px) and (min-width: 768px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 767px) {
+        @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 text-align: center;
@@ -191,7 +202,13 @@
                 grid-template-columns: 1fr;
             }
             main {
-                padding: 1rem;
+                padding: 2rem 1rem;
+            }
+            .welcome-message h1 {
+                font-size: 2rem;
+            }
+            .welcome-message p {
+                font-size: 1rem;
             }
         }
     </style>
@@ -212,37 +229,37 @@
             <div class="feature-card" onclick="navigateTo('currentLocation.html')">
                 <i class="fas fa-map-marker-alt"></i>
                 <h3>Current Location</h3>
-                <p>View real-time locations of all terminals with instant updates.</p>
+                <p>View real-time locations of all terminals with instant updates. Stay informed about your assets' whereabouts.</p>
                 <button class="feature-btn">View Locations</button>
             </div>
             <div class="feature-card" onclick="navigateTo('HistoricalData.html')">
                 <i class="fas fa-history"></i>
                 <h3>Historical Data</h3>
-                <p>Access historical location data for all devices. Track movement patterns and past locations.</p>
+                <p>Access comprehensive historical location data for all devices. Track movement patterns and analyze past locations.</p>
                 <button class="feature-btn">View History</button>
             </div>
             <div class="feature-card" onclick="navigateTo('mappedHistory.html')">
                 <i class="fas fa-route"></i>
                 <h3>Mapped History</h3>
-                <p>Visualize the movement history of devices on a map. See travel routes and frequently visited areas.</p>
+                <p>Visualize the movement history of devices on an interactive map. See detailed travel routes and identify frequently visited areas.</p>
                 <button class="feature-btn">View Mapped History</button>
             </div>
             <div class="feature-card" onclick="navigateTo('geofencing.html')">
                 <i class="fas fa-draw-polygon"></i>
                 <h3>Geofencing (Testing)</h3>
-                <p>Set up and test geofences to monitor when terminals enter or leave specified areas.</p>
+                <p>Set up and test advanced geofences to monitor when terminals enter or leave specified areas. Enhance your location-based services.</p>
                 <button class="feature-btn">Test Geofencing</button>
             </div>
             <div class="feature-card" onclick="navigateTo('geofencingPage(restricted).html')">
                 <i class="fas fa-shield-alt"></i>
                 <h3>Geofencing (Restricted)</h3>
-                <p>Manage restricted geofencing areas. Control access and monitor terminal activities.</p>
+                <p>Manage and monitor restricted geofencing areas with enhanced security. Control access and track terminal activities in sensitive zones.</p>
                 <button class="feature-btn">Manage Restricted Areas</button>
             </div>
             <div class="feature-card" onclick="navigateTo('CustomRegions.html')">
                 <i class="fas fa-pencil-alt"></i>
                 <h3>Define Custom Region</h3>
-                <p>Create and manage custom regions for geofencing. Tailor geofences to specific needs.</p>
+                <p>Create and manage custom regions for precise geofencing. Tailor your geofences to specific needs and requirements.</p>
                 <button class="feature-btn">Define Regions</button>
             </div>
         </div>
@@ -253,23 +270,27 @@
         }
 
         function logout() {
-    fetch('/api/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+            fetch('/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/login.html';
+                } else {
+                    alert('Logout failed: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = '/login.html';
-        } else {
-            alert('Logout failed: ' + data.message);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
 
+        // Add animation delay to feature cards
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
     </script>
 </body>
 </html>

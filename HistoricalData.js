@@ -11,8 +11,7 @@ function displayLocations(locations) {
 
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    const pageLocations = locations.slice(startIndex, endIndex);
-    const PageLocations=pageLocations.reverse();
+    const PageLocations = locations.slice(startIndex, endIndex);
     PageLocations.forEach(function(location) {
         var row = table.insertRow();
         row.insertCell(0).textContent = location.time;
@@ -57,7 +56,7 @@ document.getElementById('prev-page').addEventListener('click', goToPrevPage);
 
 // Generate device options from 1 to 35 (as per your example)
 const deviceSelect = document.getElementById('device-select');
-for (let i = 1; i <= 35; i++) {
+for (let i = 1; i <= 45; i++) {
     const option = document.createElement('option');
     option.value = i;
     option.textContent = `Device ${i}`;
@@ -96,6 +95,7 @@ filteredLocations = allLocations.filter(location => {
 } else {
 filteredLocations = allLocations;
 }
+filteredLocations.sort((a, b) => new Date(b.time) - new Date(a.time));
 currentPage = 1; // Reset to first page when applying filter
 displayLocations(filteredLocations);
 }
@@ -192,5 +192,5 @@ function exportAllDataToCSV() {
 }
 document.addEventListener('DOMContentLoaded', function () {
     fetchLocations();
-    setInterval(fetchLocations, 15000); // Refresh data every 15 seconds
+    setInterval(fetchLocations, 45000); // Refresh data every 15 seconds
 });
